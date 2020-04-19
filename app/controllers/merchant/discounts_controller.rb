@@ -19,9 +19,9 @@ class Merchant::DiscountsController < Merchant::BaseController
     if @discount.save
       flash[:success] = "Your new discount has been added."
       redirect_to merchant_discounts_path
-    # else
-    #   flash.now[:error] = @item.errors.full_messages.to_sentence
-    #   render "/merchant/items/new"
+    else
+      flash.now[:error] = @discount.errors.full_messages.to_sentence
+      render :new
     end
   end
 

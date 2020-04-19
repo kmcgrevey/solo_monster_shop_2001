@@ -53,5 +53,21 @@ RSpec.describe "As a merchant employee", type: :feature do
 
       expect(page).to have_content("Your new discount has been added.")
     end
+
+    it "I get an alert for incorrect or missing information" do
+      visit new_merchant_discount_path
+
+      fill_in "Name", with: nil
+      fill_in "Threshold", with: "w"
+      fill_in "Percent off", with: "120"
+
+      click_button "Create Discount"
+
+      flash_error = "Name can't be blank, Threshold is not a number, and Percent off must be less than or equal to 100"
+      
+      expect(page).to have_content(flash_error)
+      expect(page).to have_button("Create Discount")
+    end
+  
   end
 end
