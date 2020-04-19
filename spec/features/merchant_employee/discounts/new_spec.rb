@@ -41,5 +41,17 @@ RSpec.describe "As a merchant employee", type: :feature do
       expect(page).to have_content("#{@discount1.name}")
       expect(page).to have_content("#{new_discount.name}")
     end
+
+    it "I see success message upon creating a new discount" do
+      visit new_merchant_discount_path
+
+      fill_in "Name", with: "Buy 20 Get 20% OFF!"
+      fill_in "Threshold", with: "20"
+      fill_in "Percent off", with: "20"
+
+      click_button "Create Discount"
+
+      expect(page).to have_content("Your new discount has been added.")
+    end
   end
 end
