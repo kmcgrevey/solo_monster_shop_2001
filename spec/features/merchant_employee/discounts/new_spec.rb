@@ -27,13 +27,13 @@ RSpec.describe "As a merchant employee", type: :feature do
       click_button "Create New Discount"
 
       expect(current_path).to eq(new_merchant_discount_path)
-      expect(page).to have_content("New Discount for Brian's Bike Shop")
+      expect(page).to have_content("Create New Discount for Brian's Bike Shop")
+      
+      fill_in "Name", with: "Buy 20 Get 20% OFF!"
+      fill_in "Threshold", with: "20"
+      fill_in "Percent off", with: "20"
 
-      fill_in :name, with: "Buy 20 Get 20% OFF!"
-      fill_in :threshold, with: "20"
-      fill_in :percent_off, with: "20"
-
-      click_button "Submit"
+      click_button "Create Discount"
       
       new_discount = Discount.last
       

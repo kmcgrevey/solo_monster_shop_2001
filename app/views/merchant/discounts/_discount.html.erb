@@ -1,0 +1,11 @@
+<center>
+  <%= form_for @discount, url: url, method: method do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %><br>
+    <%= f.label :threshold %>
+    <%= f.text_field :threshold %><br>
+    <%= f.label :percent_off %>
+    <%= f.text_field :percent_off %><br>
+    <%= f.submit %>
+  <% end %>
+</center>
