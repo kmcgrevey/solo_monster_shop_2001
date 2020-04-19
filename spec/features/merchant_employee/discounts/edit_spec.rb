@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "As an merchant employee", type: :feature do
   describe "when I visit a discount show page" do
-    it "I click button to edit the current discount" do
+    it "I click button to edit the current discount and return after completing edit" do
       bike_shop = Merchant.create(name: "Brian's Bike Shop", address: '123 Bike Rd.', city: 'Richmond', state: 'VA', zip: 80203)
       employee = bike_shop.users.create!(name: "Josh Tukman",
                                         address: "756 Main St",
@@ -38,6 +38,9 @@ RSpec.describe "As an merchant employee", type: :feature do
       expect(page).to have_content("This is a Test")
       expect(page).to have_content("Minimum Item Count to Qualify: 1")
       expect(page).to have_content("Discount Percentage: 10%")
+      expect(page).not_to have_content("Buy 5 items get 10% OFF")
+      expect(page).not_to have_content("Minimum Item Count to Qualify: 5")
+
     end
   
   end
