@@ -1,6 +1,6 @@
 <h1>My Discount List</h1>
 <center>
   <% @merchant.discounts.each do |discount| %>
-  <p><%= discount.name %></p>
+  <h2><%= link_to discount.name, merchant_discount_path(discount) %></h2>
   <% end %>
 </center>
