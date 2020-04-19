@@ -1,0 +1,6 @@
+<h1>My Discount List</h1>
+<center>
+  <% @merchant.discounts.each do |discount| %>
+  <p><%= discount.name %></p>
+  <% end %>
+</center>
