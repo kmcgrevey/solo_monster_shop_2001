@@ -48,10 +48,8 @@ RSpec.describe "As an merchant employee", type: :feature do
         click_button "Delete Discount"
       end
       
-      expect(page).to have_content("Discount has been deleted!")
+      expect(page).to have_content("Discount has been deleted.")
     end
-
-
 
   end
 end
