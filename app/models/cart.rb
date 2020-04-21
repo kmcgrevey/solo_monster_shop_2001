@@ -23,7 +23,20 @@ class Cart
   end
 
   def subtotal(item)
-    item.price * @contents[item.id.to_s]
+    item_count = @contents[item.id.to_s]
+    if item.merchant.discounts != []
+      @thresh = item.merchant.discounts.first.threshold
+    end
+    # binding.pry
+    # item.price * @contents[item.id.to_s] #original
+    if @thresh == nil || item_count < @thresh
+      item.price * item_count
+    else
+      reduct = item.merchant.discounts.first.percent_off
+      reduct_pct = (100 - reduct.to_f)/100
+      # binding.pry
+      reduct_pct * item.price * item_count
+    end
   end
 
   def total

@@ -16,7 +16,7 @@ RSpec.describe "When I visit my cart as a User", type: :feature do
                                       password_confirmation: "secret_password",
                                       role: 1)
     discount1 = bike_shop.discounts.create!(name: "Buy 5 items get 10% OFF", threshold: 5, percent_off: 10)
-    # discount2 = bike_shop.discounts.create!(name: "Buy 10 items get 20% OFF", threshold: 10, percent_off: 20)
+    discount2 = bike_shop.discounts.create!(name: "Buy 10 items get 20% OFF", threshold: 10, percent_off: 20)
     # discount3 = dog_shop.discounts.create!(name: "Buy 20 items get 50% OFF", threshold: 20, percent_off: 50)
     
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(employee)
