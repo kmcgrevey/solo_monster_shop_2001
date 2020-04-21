@@ -105,4 +105,28 @@ RSpec.describe "When I visit my cart as a User", type: :feature do
     
     expect(page).to have_content("$975.00")
   end
+  
+  it "I see note that I am getting a discount next to each qualified item" do
+    visit item_path(@pedals)
+    click_button "Add To Cart"
+    
+    visit item_path(@helmet)
+    click_button "Add To Cart"
+
+    visit "/cart"
+
+    within "#cart-item-#{@pedals.id}" do
+      4.times do
+        click_button "Add Qty"
+      end 
+
+      expect(page).to have_content("(discount rec'd)")
+    end
+
+    within "#cart-item-#{@helmet.id}" do
+      expect(page).not_to have_content("(discount rec'd)")
+    end
+    save_and_open_page
+  end
+
 end
