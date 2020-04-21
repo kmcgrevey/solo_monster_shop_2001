@@ -121,12 +121,12 @@ RSpec.describe "When I visit my cart as a User", type: :feature do
       end 
 
       expect(page).to have_content("(discount rec'd)")
+      expect(page).to have_content("Buy 5 items get 10% OFF")
     end
 
     within "#cart-item-#{@helmet.id}" do
       expect(page).not_to have_content("(discount rec'd)")
     end
-    save_and_open_page
   end
 
 end
