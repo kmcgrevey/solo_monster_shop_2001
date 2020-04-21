@@ -41,5 +41,8 @@ RSpec.describe "When I visit my cart as a User", type: :feature do
       expect(page).not_to have_content("$1,000.00")
       expect(page).to have_content("$900.00")
     end
+
+    expect(page).not_to have_content("Total: $1000.00")
+    expect(page).to have_content("Total: $900.00")
   end
 end

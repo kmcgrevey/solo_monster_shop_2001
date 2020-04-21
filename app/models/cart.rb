@@ -55,11 +55,20 @@ class Cart
     end
   end
 
-  def total
-    @contents.sum do |item_id,quantity|
-      Item.find(item_id).price * quantity
+  def total #based from turing final method
+    total = 0.0
+    @contents.each do |item_id,quantity|
+      # total += Item.find(item_id).price * quantity
+      total += subtotal(Item.find(item_id))
     end
+    total
   end
+  
+  # def total #existing brownfield
+  #   @contents.sum do |item_id,quantity|
+  #     Item.find(item_id).price * quantity
+  #   end
+  # end
 
   def add_quantity(item_id)
     add_item(item_id)
