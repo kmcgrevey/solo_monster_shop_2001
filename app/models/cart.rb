@@ -38,9 +38,11 @@ class Cart
   def subtotal(item) #refactor to find discount
     discount = find_discount(item)
     
-    if discount.compact == []
+    # if discount.compact == []
+    if discount == []
       item.price * @contents[item.id.to_s]
     else
+      # binding.pry
       reduction = discount.first.percent_off
       reduction_pct = (100 - reduction.to_f)/100
       reduction_pct * item.price * @contents[item.id.to_s]
@@ -48,27 +50,30 @@ class Cart
   end
  
   def find_discount(item) #refactor to find discount
-    item.merchant.discounts.map do |discount|
+    # binding.pry
+    # item.merchant.discounts.map do |discount|
+    item.merchant.discounts.order(threshold: :desc).map do |discount|
       if @contents[item.id.to_s] >= discount.threshold
         discount
       end
-    end
+    end.compact
   end
 
-  def total #based from turing final method
-    total = 0.0
-    @contents.each do |item_id,quantity|
-      # total += Item.find(item_id).price * quantity
-      total += subtotal(Item.find(item_id))
-    end
-    total
-  end
-  
-  # def total #existing brownfield
-  #   @contents.sum do |item_id,quantity|
-  #     Item.find(item_id).price * quantity
+  # def total #based from turing final method
+  #   total = 0.0
+  #   @contents.each do |item_id,quantity|
+  #     # total += Item.find(item_id).price * quantity
+  #     total += subtotal(Item.find(item_id))
   #   end
+  #   total
   # end
+  
+  def total #existing brownfield
+    @contents.sum do |item_id,quantity|
+      # Item.find(item_id).price * quantity
+      subtotal(Item.find(item_id))
+    end
+  end
 
   def add_quantity(item_id)
     add_item(item_id)
