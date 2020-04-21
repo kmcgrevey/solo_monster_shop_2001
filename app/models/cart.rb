@@ -22,20 +22,36 @@ class Cart
     item_quantity
   end
 
-  def subtotal(item)
-    item_count = @contents[item.id.to_s]
-    if item.merchant.discounts != []
-      @thresh = item.merchant.discounts.first.threshold
-    end
-    # binding.pry
-    # item.price * @contents[item.id.to_s] #original
-    if @thresh == nil || item_count < @thresh
-      item.price * item_count
+  # def subtotal(item) #sandbox solution rough
+  #   if item.merchant.discounts != []
+  #     @thresh = item.merchant.discounts.first.threshold
+  #   end
+  #   if @thresh == nil || @contents[item.id.to_s] < @thresh
+  #     item.price * @contents[item.id.to_s]
+  #   else
+  #     reduct = item.merchant.discounts.first.percent_off
+  #     reduct_pct = (100 - reduct.to_f)/100
+  #     reduct_pct * item.price * @contents[item.id.to_s]
+  #   end
+  # end
+
+  def subtotal(item) #refactor to find discount
+    discount = find_discount(item)
+    
+    if discount.compact == []
+      item.price * @contents[item.id.to_s]
     else
-      reduct = item.merchant.discounts.first.percent_off
-      reduct_pct = (100 - reduct.to_f)/100
-      # binding.pry
-      reduct_pct * item.price * item_count
+      reduction = discount.first.percent_off
+      reduction_pct = (100 - reduction.to_f)/100
+      reduction_pct * item.price * @contents[item.id.to_s]
+    end
+  end
+ 
+  def find_discount(item) #refactor to find discount
+    item.merchant.discounts.map do |discount|
+      if @contents[item.id.to_s] >= discount.threshold
+        discount
+      end
     end
   end
 
