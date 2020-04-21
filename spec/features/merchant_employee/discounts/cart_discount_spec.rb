@@ -3,8 +3,9 @@ require 'rails_helper'
 RSpec.describe "When I visit my cart as a User", type: :feature do
   before(:each) do
     bike_shop = Merchant.create(name: "Brian's Bike Shop", address: '123 Bike Rd.', city: 'Richmond', state: 'VA', zip: 80203)
-    # dog_shop = Merchant.create(name: "Meg's Dog Shop", address: '123 Dog Rd.', city: 'Hershey', state: 'PA', zip: 80203)
+    
     @pedals = bike_shop.items.create(name: "Pedals", description: "Clipless bliss!", price: 200, image: "https://www.rei.com/media/product/130015", inventory: 20)
+    @helmet = bike_shop.items.create(name: "Helmet", description: "Safety Third!", price: 75, image: "https://www.rei.com/media/product/153004", inventory: 20)
     
     employee = bike_shop.users.create!(name: "Josh Tukman",
                                       address: "756 Main St",
@@ -15,10 +16,10 @@ RSpec.describe "When I visit my cart as a User", type: :feature do
                                       password: "secret_password",
                                       password_confirmation: "secret_password",
                                       role: 1)
-      discount2 = bike_shop.discounts.create!(name: "Buy 10 items get 50% OFF", threshold: 10, percent_off: 50)
-      discount1 = bike_shop.discounts.create!(name: "Buy 5 items get 10% OFF", threshold: 5, percent_off: 10)
-      discount4 = bike_shop.discounts.create!(name: "Buy 11 items get 100% OFF", threshold: 11, percent_off: 100)
-    # discount3 = dog_shop.discounts.create!(name: "Buy 20 items get 50% OFF", threshold: 20, percent_off: 50)
+    
+    discount2 = bike_shop.discounts.create!(name: "Buy 10 items get 50% OFF", threshold: 10, percent_off: 50)
+    discount1 = bike_shop.discounts.create!(name: "Buy 5 items get 10% OFF", threshold: 5, percent_off: 10)
+    discount4 = bike_shop.discounts.create!(name: "Buy 11 items get 100% OFF", threshold: 11, percent_off: 100)
     
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(employee)
   end
@@ -77,5 +78,31 @@ RSpec.describe "When I visit my cart as a User", type: :feature do
     end
     
     expect(page).to have_content("Total: $0.00")
+  end
+
+  it "discount only applies to qualified item quantities" do
+    visit item_path(@pedals)
+    click_button "Add To Cart"
+    
+    visit item_path(@helmet)
+    click_button "Add To Cart"
+
+    visit "/cart"
+    
+    expect(page).to have_content("Total: $275.00")
+
+    within "#cart-item-#{@pedals.id}" do
+      expect(page).to have_content("$200.00")
+      
+      4.times do
+        click_button "Add Qty"
+      end 
+    end
+
+    within "#cart-item-#{@helmet.id}" do
+      expect(page).to have_content("$75.00")
+    end
+    
+    expect(page).to have_content("$975.00")
   end
 end
