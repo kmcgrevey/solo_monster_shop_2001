@@ -1,0 +1,11 @@
+<h1>My Discount List</h1>
+<center>
+  <%= button_to "Create New Discount", new_merchant_discount_path, method: :get %>
+  
+  <% @merchant.discounts.each do |discount| %>
+    <section id='discount-<%= discount.id %>'>
+      <h2><%= link_to discount.name, merchant_discount_path(discount), method: :get %></h2>
+      <%= button_to "Delete Discount", merchant_discount_path(discount), method: :delete %>
+    </section>
+  <% end %>
+</center>
