@@ -24,11 +24,13 @@ class Cart
 
   def subtotal(item)
     discount = find_discount(item)
-    
     if discount == []
       item.price * @contents[item.id.to_s]
     else
-      reduction = discount.first.percent_off
+      # binding.pry
+      best_discount = discount.max_by{|k| k[:percent_off] } #returns array of discounts -- find the max :percent_off
+      # reduction = discount.first.percent_off
+      reduction = best_discount.percent_off
       reduction_pct = (100 - reduction.to_f)/100
       reduction_pct * item.price * @contents[item.id.to_s]
     end
@@ -41,6 +43,11 @@ class Cart
       end
     end.compact
   end
+
+  # def best_discount(discount)
+  #   # binding.pry
+  #   discount.max_by{|disc| disc[:percent_off] }
+  # end
   
   def total 
     @contents.sum do |item_id,quantity|
