@@ -23,12 +23,36 @@ class Cart
   end
 
   def subtotal(item)
-    item.price * @contents[item.id.to_s]
+    discount = best_discount(item)
+    
+    if discount == []
+      item.price * @contents[item.id.to_s]
+    else
+      reduction_pct = (100 - discount.percent_off.to_f)/100
+      item.price * @contents[item.id.to_s] * reduction_pct
+    end
+  end
+ 
+  def find_discount(item)
+    item.merchant.discounts.order(threshold: :desc).map do |discount|
+      if @contents[item.id.to_s] >= discount.threshold
+        discount
+      end
+    end.compact
   end
 
-  def total
+  def best_discount(item)
+    best_dis = find_discount(item)
+    if best_dis != []
+      best_dis.max_by{|discount| discount[:percent_off] } 
+    else
+      best_dis
+    end
+  end
+  
+  def total 
     @contents.sum do |item_id,quantity|
-      Item.find(item_id).price * quantity
+      subtotal(Item.find(item_id))
     end
   end
 

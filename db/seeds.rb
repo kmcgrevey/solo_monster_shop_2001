@@ -9,6 +9,7 @@
 User.destroy_all
 Merchant.destroy_all
 Item.destroy_all
+Discount.destroy_all
 Order.destroy_all
 ItemOrder.destroy_all
 
@@ -123,9 +124,14 @@ pot = kitchen_shop.items.create(name: "Cooking Pot", description: "Legality vari
 espresso = kitchen_shop.items.create(name: "Breville Bambino Plus", description: "Impress your friends!", price: 500, image: "https://www.surlatable.com/dw/image/v2/BCJL_PRD/on/demandware.static/-/Sites-shop-slt-master-catalog/default/dw92544ea3/images/large/4910287_1118_vs.jpg", inventory: 10)
 corn_holder = kitchen_shop.items.create(name: "OXO Corn Holders", description: "Good for corny jokes", price: 500, image: "https://www.surlatable.com/dw/image/v2/BCJL_PRD/on/demandware.static/-/Sites-shop-slt-master-catalog/default/dw66439aea/images/large/1473222_01i_0414_s.jpg", inventory: 50)
 
+#discounts
+discount1 = bike_shop.discounts.create!(name: "Buy 5 items get 10% OFF", threshold: 5, percent_off: 10)
+discount2 = bike_shop.discounts.create!(name: "Buy 10 items get 50% OFF", threshold: 10, percent_off: 50)
+discount3 = dog_shop.discounts.create!(name: "Buy 2 get 50% OFF", threshold: 2, percent_off: 50)
+
 #orders
-order1 = josh.orders.create!(name: 'Josh Tukman', address: '123 Josh Ave', city: 'Broomfield', state: 'CO', zip: 82345, status: 1)
-order2 = kevin.orders.create!(name: 'Kevin McGrevey', address: '123 Kevin Ave', city: 'Denver', state: 'CO', zip: 80222)
+order1 = josh.orders.create(name: 'Josh Tukman', address: '123 Josh Ave', city: 'Broomfield', state: 'CO', zip: 82345, status: 1)
+order2 = kevin.orders.create(name: 'Kevin McGrevey', address: '123 Kevin Ave', city: 'Denver', state: 'CO', zip: 80222)
 
 #add items to orders
 ItemOrder.create!(order_id: order2.id, item_id: tire.id, price: tire.price, quantity: 9)
