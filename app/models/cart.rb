@@ -23,14 +23,13 @@ class Cart
   end
 
   def subtotal(item)
-    discount = find_discount(item)
+    discount = best_discount(item)
     
     if discount == []
       item.price * @contents[item.id.to_s]
     else
-      reduction = best_discount(item).percent_off
-      reduction_pct = (100 - reduction.to_f)/100
-      reduction_pct * item.price * @contents[item.id.to_s]
+      reduction_pct = (100 - discount.percent_off.to_f)/100
+      item.price * @contents[item.id.to_s] * reduction_pct
     end
   end
  
@@ -44,7 +43,11 @@ class Cart
 
   def best_discount(item)
     best_dis = find_discount(item)
-    best_dis.max_by{|discount| discount[:percent_off] }
+    if best_dis != []
+      best_dis.max_by{|discount| discount[:percent_off] } 
+    else
+      best_dis
+    end
   end
   
   def total 
