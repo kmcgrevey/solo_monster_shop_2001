@@ -32,7 +32,7 @@ RSpec.describe "When more than one discount has the same threshold", type: :feat
       end 
       
       expect(page).to have_content("$500.00")
-      # expect(page).to have_content("Buy 5 items get 50% OFF")
+      expect(page).to have_content("Buy 5 items get 50% OFF")
       expect(page).not_to have_content("$900.00")
       expect(page).not_to have_content("$800.00")
     end

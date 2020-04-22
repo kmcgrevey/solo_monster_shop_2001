@@ -43,7 +43,8 @@
         <p><%=number_to_currency(cart.subtotal(item))%></p>
         <% if cart.find_discount(item) != [] %>
           <p>(discount rec'd)</p>
-          <p><%= "#{cart.find_discount(item).first.name}"%></p>
+          <% #binding.pry %>
+          <p><%= "#{cart.best_discount(item).name}"%></p>
         <% end %>
       </td>
     </tr>
