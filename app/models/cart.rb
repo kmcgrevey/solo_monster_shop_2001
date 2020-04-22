@@ -28,10 +28,7 @@ class Cart
     if discount == []
       item.price * @contents[item.id.to_s]
     else
-      # binding.pry
-      best_discount = discount.max_by{|k| k[:percent_off] } #returns array of discounts -- find the max :percent_off
-      # reduction = discount.first.percent_off
-      reduction = best_discount.percent_off
+      reduction = best_discount(item).percent_off
       reduction_pct = (100 - reduction.to_f)/100
       reduction_pct * item.price * @contents[item.id.to_s]
     end
@@ -46,9 +43,8 @@ class Cart
   end
 
   def best_discount(item)
-    best_d = find_discount(item)
-    # binding.pry
-    best_d.max_by{|disc| disc[:percent_off] }
+    best_dis = find_discount(item)
+    best_dis.max_by{|discount| discount[:percent_off] }
   end
   
   def total 
